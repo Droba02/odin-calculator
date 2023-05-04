@@ -32,8 +32,16 @@ function operate(num1,num2,operator){
     return res;
 }
 function updateDisplay(text){
-    if(text === '') display.innerText = '';
-    display.innerText += text;
+
+    if(text === '')display.innerText = '';
+    
+    if(checkLength() < 12){
+        
+        display.innerText += text;
+    }
+}
+function isFloat(n){
+    return Number(n) === n && n % 1 !== 0;
 }
 
 function calculate(){
@@ -52,13 +60,21 @@ function calculate(){
                 num2 = +text.slice(i+1,text.length)
                 operator = text[i]
                 display.innerText = '';
-                updateDisplay(operate(num1,num2,operator));
+                let res = operate(num1,num2,operator)
+                if(isFloat(res)){
+                    res = +res.toFixed(7)
+                }
+                updateDisplay(res);
             
         }
 
     }
+    let res = operate(num1,num2,operator)
+                if(isFloat(res)){
+                    res = +res.toFixed(8)
+                }
 
-    return operate(num1,num2,operator);
+    return res;
 }
 
 function checkForOperator(){
@@ -102,6 +118,10 @@ function dotOperations(){
 return false;
 }
 
+function checkLength(){
+    return display.innerText.length;
+}
+
 
 let display = document.getElementById('display');
 let displayValue = '';
@@ -113,6 +133,7 @@ let dotButton = document.querySelector('#Decimal');
 let upperDisplay = document.querySelector('#upper-display');
 
 buttons.forEach(button =>{
+    
 
     if(button.id != 'clear' && button.id != 'Enter' && button.id !='Backspace'){
         button.addEventListener('click',()=>{
@@ -192,5 +213,3 @@ document.addEventListener('keydown', (event)=>{
 })
 
 })
-
-
